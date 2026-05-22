@@ -1,2 +1,7 @@
+flask
 openai
+pyyaml
+pymupdf
 python-dotenv
+pdf2image
+pillow

@@ -1,0 +1,52 @@
+# ================================================================
+# 🎯 PROJECT CONFIG — Minimaliste
+# ================================================================
+# Configuration d'un API de validation de documents (rapport d'expert)
+# Paramétrisation complète : pas de hardcode dans le code
+# ================================================================
+
+# Environnement
+env_hosts:
+  local:
+    ENV: "local"
+    DEBUG: true
+
+# Backend — Azure OpenAI
+backend:
+  type: "azure_openai_llm"
+  temperature: 1  # gpt-5-mini ne supporte que la valeur par défaut (1)
+  params:
+    max_tokens: 4000
+
+# Pipeline — Classification de document
+pipeline:
+  type: "document_classification"
+  min_confidence: 0.85
+  default_max_pages: 10
+
+  # Description du type de document à valider
+  label_descriptions:
+    plan_echelle: |
+      Plan à l'échelle ou certificat de localisation indiquant l'emplacement des arbres à abattre. Vérifie les critères suivants :
+      - Langue acceptée (français ou anglais)
+      - Document lisible (plans, annotations et légende lisibles)
+      - Adresse ou désignation cadastrale indiquée
+      - Limites du terrain clairement visibles
+      - Implantation des bâtiments et éléments fixes visible (clôture, balcon, etc.)
+      - Localisation approximative de chacun des arbres à abattre indiquée, à l'intérieur des limites du terrain
+      - Date du document indiquée
+      Le document est valide UNIQUEMENT si tous les critères ci-dessus
+      sont présents et explicites dans le document. Ne jamais inférer une valeur absente.
+      Justifie critère par critère en citant ce qui a été trouvé et ce qui est absent.
+
+    lettre_autorisation_coproprietaires: |
+      Lettre d'autorisation d'un copropriétaire ou résolution du syndicat de copropriété autorisant l'abattage d'un arbre. Vérifie les critères suivants :
+      - Langue acceptée (français ou anglais)
+      - Nom du copropriétaire ou nom légal du syndicat mentionné
+      - Adresse complète de la propriété concernée indiquée
+      - Autorisation explicite d'abattage d'arbre mentionnée
+      - Signature(s) présente(s) (manuscrite ou électronique)
+      - Date d'émission indiquée
+      Le document est valide UNIQUEMENT si tous les critères ci-dessus
+      sont présents et explicites dans le document. Ne jamais inférer une valeur absente.
+      Justifie critère par critère en citant ce qui a été trouvé et ce qui est absent.
