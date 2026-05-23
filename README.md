@@ -88,7 +88,11 @@ Les paramètres clés à ajuster :
 
 | Paramètre | Emplacement | Description |
 |---|---|---|
-| `max_tokens` | `backend.params` | Tokens max pour la réponse — mettre suffisamment haut (ex: 4000) |
+| `model` | `backend` | Nom du modèle déployé (ex: `gpt-5-mini`) |
+| `temperature` | `backend` | Créativité du modèle (0-1, défaut: 1) |
+| `timeout` | `backend` | Délai max en secondes pour un appel API (défaut: 60) |
+| `reasoning_effort` | `backend` | Effort de raisonnement du modèle (`low`, `medium`, `high`) |
+| `max_tokens` | `backend.params` | Tokens max pour la réponse (ex: 4000) |
 | `default_max_pages` | `pipeline` | Nombre de pages max à analyser par PDF |
 | `min_confidence` | `pipeline` | Seuil de confiance minimum (0-1) |
 | `label_descriptions` | `pipeline` | Types de documents à valider et leurs critères |
@@ -134,9 +138,11 @@ print(response.json())
 backend = AzureOpenAIBackend(
     api_key="xxx",
     endpoint="https://...",
-    deployment="gpt-4o-mini",
-    temperature=0,
-    max_tokens=1000
+    deployment="gpt-5-mini",
+    temperature=1,
+    max_tokens=4000,
+    timeout=60,
+    reasoning_effort="low"
 )
 
 response = backend.predict(
@@ -171,4 +177,5 @@ config = loader.load()
 
 backend = config["BACKEND"]
 pipeline = config["PIPELINE"]
+project_meta = config["PROJECT_META"]
 ```
