@@ -218,5 +218,6 @@ __marimo__/
 .streamlit/secrets.toml
 
 # Données sensibles
-data/
+data/*
+!data/.gitkeep
 *.pdf

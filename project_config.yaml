@@ -1,8 +1,8 @@
 # ================================================================
 #  PROJECT CONFIG — azure-openai-poc
 #
-# Projet de validation de documents pour les demandes de permis
-# d'abattage d'arbres (classification par Azure OpenAI).
+# Projet de validation de documents de candidature (CV et lettre
+# de motivation) par classification Azure OpenAI.
 #
 # Ce fichier définit l'ensemble des paramètres dynamiques du projet :
 #   • backend et pipeline de prédiction
@@ -36,27 +36,25 @@ pipeline:
 
   # Description du type de document à valider
   label_descriptions:
-    plan_echelle: |
-      Plan à l'échelle ou certificat de localisation indiquant l'emplacement des arbres à abattre. Vérifie les critères suivants :
-      - Langue acceptée (français ou anglais)
-      - Document lisible (plans, annotations et légende lisibles)
-      - Adresse ou désignation cadastrale indiquée
-      - Limites du terrain clairement visibles
-      - Implantation des bâtiments et éléments fixes visible (clôture, balcon, etc.)
-      - Localisation approximative de chacun des arbres à abattre indiquée, à l'intérieur des limites du terrain
-      - Date du document indiquée
+    cv: |
+      Curriculum vitae (CV) d'un candidat. Vérifie les critères suivants :
+      - Nom complet du candidat indiqué
+      - Coordonnées présentes (email et/ou téléphone)
+      - Au moins une expérience professionnelle avec dates et description
+      - Formation académique indiquée (établissement et diplôme)
+      - Compétences ou aptitudes listées
       Le document est valide UNIQUEMENT si tous les critères ci-dessus
       sont présents et explicites dans le document. Ne jamais inférer une valeur absente.
       Justifie critère par critère en citant ce qui a été trouvé et ce qui est absent.
 
-    lettre_autorisation_coproprietaires: |
-      Lettre d'autorisation d'un copropriétaire ou résolution du syndicat de copropriété autorisant l'abattage d'un arbre. Vérifie les critères suivants :
-      - Langue acceptée (français ou anglais)
-      - Nom du copropriétaire ou nom légal du syndicat mentionné
-      - Adresse complète de la propriété concernée indiquée
-      - Autorisation explicite d'abattage d'arbre mentionnée
-      - Signature(s) présente(s) (manuscrite ou électronique)
-      - Date d'émission indiquée
+    lettre_motivation: |
+      Lettre de motivation accompagnant une candidature. Vérifie les critères suivants :
+      - Nom complet du candidat indiqué
+      - Poste ou domaine visé mentionné explicitement
+      - Motivation ou intérêt pour le poste exprimé
+      - Référence à une ou plusieurs expériences ou compétences pertinentes
+      - Formule de salutation et de clôture présentes
+      - Signature présente (manuscrite ou électronique)
       Le document est valide UNIQUEMENT si tous les critères ci-dessus
       sont présents et explicites dans le document. Ne jamais inférer une valeur absente.
       Justifie critère par critère en citant ce qui a été trouvé et ce qui est absent.
@@ -67,12 +65,12 @@ pipeline:
       required: true
       nullable: false
       allowed:
-        - plan_echelle
-        - lettre_autorisation_coproprietaires
+        - cv
+        - lettre_motivation
 
 # ================================================================
 # Métadonnées du projet
 # ================================================================
 project_meta:
-  description: "Validation de documents exigés pour les demandes de permis d'abattage d'arbres"
+  description: "Validation de documents de candidature (CV et lettre de motivation)"
   environment: { value_key: "ENV" }
