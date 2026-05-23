@@ -112,7 +112,7 @@ API accessible à : http://localhost:5001
 ```bash
 curl -X POST http://localhost:5001/predict \
   --form 'file=@rapport.pdf' \
-  --form 'expected_type=rapport_expert'
+  --form 'expected_type=cv'
 ```
 
 ### Via Python
@@ -124,7 +124,7 @@ with open("rapport.pdf", "rb") as f:
     response = requests.post(
         "http://localhost:5001/predict",
         files={"file": f},
-        data={"expected_type": "rapport_expert"}
+        data={"expected_type": "cv"}
     )
     
 print(response.json())
@@ -157,14 +157,14 @@ response = backend.predict(
 ```python
 pipeline = DocumentClassificationPipeline(
     backend=backend,
-    label_descriptions={"rapport_expert": "Rapport d'un expert..."},
+    label_descriptions={"cv": "Curriculum vitae d'un candidat..."},
     min_confidence=0.85
 )
 
 result = pipeline.predict(
     file_bytes=open("rapport.pdf", "rb").read(),
     filename="rapport.pdf",
-    expected_type="rapport_expert"
+    expected_type="cv"
 )
 # -> {"is_expected_type": true, "confidence": 0.92, "reason": "..."}
 ```
