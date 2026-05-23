@@ -18,7 +18,11 @@ class ProjectConfigLoader:
         self._load_yaml()
         backend = self._build_backend()
         pipeline = self._build_pipeline(backend)
-        return {"BACKEND": backend, "PIPELINE": pipeline}
+        return {
+            "BACKEND": backend,
+            "PIPELINE": pipeline,
+            "PROJECT_META": self.config.get("project_meta", {}),
+        }
 
     def _load_yaml(self):
         if not os.path.exists(self.config_path):
@@ -53,6 +57,8 @@ class ProjectConfigLoader:
             deployment=deployment_name,
             temperature=backend_cfg.get("temperature", 1),
             max_tokens=params.get("max_tokens", 1000),
+            timeout=backend_cfg.get("timeout", 60),
+            reasoning_effort=backend_cfg.get("reasoning_effort"),
         )
 
     def _build_pipeline(self, backend):

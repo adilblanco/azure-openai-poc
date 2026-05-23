@@ -1,7 +1,14 @@
 # ================================================================
-# 🎯 PROJECT CONFIG — Minimaliste
-# ================================================================
-# Configuration d'un API de validation de documents (rapport d'expert)
+#  PROJECT CONFIG — azure-openai-poc
+#
+# Projet de validation de documents pour les demandes de permis
+# d'abattage d'arbres (classification par Azure OpenAI).
+#
+# Ce fichier définit l'ensemble des paramètres dynamiques du projet :
+#   • backend et pipeline de prédiction
+#   • configuration du modèle Azure OpenAI
+#   • métadonnées du projet
+#
 # Paramétrisation complète : pas de hardcode dans le code
 # ================================================================
 
@@ -14,7 +21,10 @@ env_hosts:
 # Backend — Azure OpenAI
 backend:
   type: "azure_openai_llm"
-  temperature: 1  # gpt-5-mini ne supporte que la valeur par défaut (1)
+  model: "gpt-5-mini"
+  temperature: 0 
+  timeout: 60
+  reasoning_effort: low
   params:
     max_tokens: 4000
 
@@ -50,3 +60,19 @@ pipeline:
       Le document est valide UNIQUEMENT si tous les critères ci-dessus
       sont présents et explicites dans le document. Ne jamais inférer une valeur absente.
       Justifie critère par critère en citant ce qui a été trouvé et ce qui est absent.
+
+  meta_schema:
+    expected_type:
+      type: str
+      required: true
+      nullable: false
+      allowed:
+        - plan_echelle
+        - lettre_autorisation_coproprietaires
+
+# ================================================================
+# Métadonnées du projet
+# ================================================================
+project_meta:
+  description: "Validation de documents exigés pour les demandes de permis d'abattage d'arbres"
+  environment: { value_key: "ENV" }
