@@ -99,8 +99,18 @@ Les paramètres clés à ajuster :
 
 ### 5. Lancer l'API
 
+**Localement**
 ```bash
 python app.py
+```
+
+**Via Docker**
+```bash
+make build   # build l'image Docker
+make run     # lance le conteneur
+make shell   # ouvre un shell dans le conteneur
+make logs    # affiche les logs du conteneur
+make clean   # supprime l'image Docker
 ```
 
 API accessible à : http://localhost:5001
@@ -112,7 +122,7 @@ API accessible à : http://localhost:5001
 ```bash
 curl -X POST http://localhost:5001/predict \
   --form 'file=@rapport.pdf' \
-  --form 'expected_type=cv'
+  --form 'expected_type=cv' | jq
 ```
 
 ### Via Python
